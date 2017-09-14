@@ -2,24 +2,61 @@
 <html>
 <head>
 <style>
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
+div.container {
     width: 100%;
+    border: 1px solid gray;
 }
 
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
+header, footer {
+    padding: 1em;
+    color: white;
+    background-color: brown;
+    clear: left;
+    text-align: center;
 }
 
-tr:nth-child(even) {
-    background-color: #dddddd;
+nav {
+    float: left;
+    max-width: 160px;
+    margin: 0;
+    padding: 1em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+nav ul a {
+    text-decoration: none;
+}
+
+table {
+    margin-left: 170px;
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
 }
 </style>
 </head>
-<body bgcolor="#e8dfd0">
+<body>
+
+<div class="container">
+
+<header>
+   <h1>SLIT</h1>
+   <p1>Studenter</p1>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#">Studenter</a></li>
+    <li><a href="#">Moduler</a></li>
+    <li><a href="#">Logg ut</a></li>
+    <li><a href="#">Rediger</a></li>
+    <li><a href="#">Noe mer</a></li>
+  </ul>
+</nav>
 
 <table>
   <tr>
@@ -93,6 +130,10 @@ tr:nth-child(even) {
 	</td>
   </tr>
 </table>
+
+<footer>Kanskje en copyright?</footer>
+
+</div>
 
 </body>
 </html>
