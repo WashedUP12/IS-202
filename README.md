@@ -1,4 +1,4 @@
-# IS-202
+# servletdb = kode for å legge til verdier i database ved hjelp av servlet
 
 # Listdemo_1 = backup
 
