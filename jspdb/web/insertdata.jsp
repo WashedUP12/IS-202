@@ -25,7 +25,7 @@
             
         try{
         Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb", "root", "vrdZY1688");
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/jspdb", "root", "passord på mysql");
         Statement st = con.createStatement();
         
         st.executeUpdate("insert into register(name,email,password)values('"+name+"','"+email+"','"+pass+"')");
