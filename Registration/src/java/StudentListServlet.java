@@ -42,7 +42,7 @@ public class StudentListServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");       
         try (PrintWriter out = response.getWriter()) {
            Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","DittPassord");
+           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","Razernaga8");
            Statement stmt = con.createStatement();
            ArrayList list = new ArrayList();
            ResultSet rs = stmt.executeQuery("SELECT userID, name, email FROM register");

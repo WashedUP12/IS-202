@@ -50,13 +50,12 @@ table {
   
 <nav>
   <ul>
-     <li><a href="studentlist">Studenter</a></li>
-    <li><a href="#">Moduler</a></li>
-    <li><a href="#">Blogg</a></li>
-    <li><a href="#">Meldinger</a></li><br>
-    <li><a href="#">Logg ut</a></li>
+     <li><a href="studentlist">Students</a></li>
+    <li><a href="modulelist">Modules</a></li>
+    <li><a href="index.jsp">Log out</a></li>
   </ul>
 </nav>
+<h2><a href="registration.jsp"> Register new student</a></h2>
 <table>
   <tr>
     <th>Bruker ID</th>

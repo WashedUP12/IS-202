@@ -3,8 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/eriky/Desktop/Registration/src/java/Registration.java</file>
-            <file>file:/C:/Users/eriky/Desktop/Registration/src/java/Login.java</file>
+            <file>file:/C:/Users/Christoffers/Documents/NetBeansProjects/Registration/web/index.jsp</file>
+            <file>file:/C:/Users/Christoffers/Documents/NetBeansProjects/Registration/src/java/ModuleListServlet.java</file>
+            <file>file:/C:/Users/Christoffers/Documents/NetBeansProjects/Registration/web/moduleregistration.jsp</file>
+            <file>file:/C:/Users/Christoffers/Documents/NetBeansProjects/Registration/web/registration.jsp</file>
+            <file>file:/C:/Users/Christoffers/Documents/NetBeansProjects/Registration/web/Modulgodkjenning.jsp</file>
+            <file>file:/C:/Users/Christoffers/Documents/NetBeansProjects/Registration/web/Home.jsp</file>
+            <file>file:/C:/Users/Christoffers/Documents/NetBeansProjects/Registration/src/java/ModuleRegistration.java</file>
+            <file>file:/C:/Users/Christoffers/Documents/NetBeansProjects/Registration/web/Studentoversikt.jsp</file>
+            <file>file:/C:/Users/Christoffers/Documents/NetBeansProjects/Registration/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/Christoffers/Documents/NetBeansProjects/Registration/src/java/StudentListServlet.java</file>
         </group>
     </open-files>
 </project-private>

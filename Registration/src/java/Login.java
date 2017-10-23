@@ -35,6 +35,9 @@ public class Login extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    public static int user_ID;
+    public static String user_name;
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -44,9 +47,9 @@ public class Login extends HttpServlet {
            String password = request.getParameter("password");
            String dbName = null;
            String dbPassword = null;
-           String sql ="select * from users where name=? and password=?";
+           String sql ="select * from register where name=? and password=?";
            Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","DittPassord");
+           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","Razernaga8");
            PreparedStatement ps = con.prepareStatement(sql);
            ps.setString(1, name);
            ps.setString(2, password);
@@ -54,9 +57,12 @@ public class Login extends HttpServlet {
            while(rs.next()){
                dbName = rs.getString("name");
                dbPassword = rs.getString("password");
+               user_ID = rs.getInt("userID");
+               user_name = rs.getString("name");
            }
            if (name.equals (dbName)&&password.equals(dbPassword)){
-               out.println("Successfull Login");
+               RequestDispatcher rd = request.getRequestDispatcher("Home.jsp");
+               rd.forward(request, response);
            }
            else{
                response.sendRedirect("Login.jsp");
