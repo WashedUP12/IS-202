@@ -42,7 +42,7 @@ public class ModuleListServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");       
         try (PrintWriter out = response.getWriter()) {
            Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","Razernaga8");
+           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","ditt passord");
            Statement stmt = con.createStatement();
            ArrayList list = new ArrayList();
            ResultSet rs = stmt.executeQuery("SELECT * FROM modul");

@@ -49,7 +49,7 @@ public class Login extends HttpServlet {
            String dbPassword = null;
            String sql ="select * from register where name=? and password=?";
            Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","Razernaga8");
+           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","ditt passord");
            PreparedStatement ps = con.prepareStatement(sql);
            ps.setString(1, name);
            ps.setString(2, password);
