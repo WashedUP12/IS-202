@@ -42,9 +42,9 @@ public class StudentListServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");       
         try (PrintWriter out = response.getWriter()) {
            Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","ditt passord");
+           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","dittPassord");
            Statement stmt = con.createStatement();
-           ArrayList list = new ArrayList();
+           ArrayList<String> list = new ArrayList<String>();
            ResultSet rs = stmt.executeQuery("SELECT userID, name, email FROM register");
 
             while (rs.next()) {
@@ -53,6 +53,7 @@ public class StudentListServlet extends HttpServlet {
                 list.add(rs.getString("email"));
             }
             request.setAttribute("data", list);
+            request.setAttribute("type", Login.user_type);
             RequestDispatcher rd = request.getRequestDispatcher("Studentoversikt.jsp");
             rd.forward(request, response);
             

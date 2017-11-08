@@ -37,6 +37,8 @@ public class Login extends HttpServlet {
      */
     public static int user_ID;
     public static String user_name;
+    public static String user_type;
+    public static boolean isAdmin;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,7 +51,7 @@ public class Login extends HttpServlet {
            String dbPassword = null;
            String sql ="select * from register where name=? and password=?";
            Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","ditt passord");
+           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","dittPassord");
            PreparedStatement ps = con.prepareStatement(sql);
            ps.setString(1, name);
            ps.setString(2, password);
@@ -59,8 +61,17 @@ public class Login extends HttpServlet {
                dbPassword = rs.getString("password");
                user_ID = rs.getInt("userID");
                user_name = rs.getString("name");
+               user_type = rs.getString("userType");
+               
+               if (rs.getString("isAdmin") == "yes") {
+                   isAdmin = true;
+               }
+               else {
+                   isAdmin = false;
+               }
            }
            if (name.equals (dbName)&&password.equals(dbPassword)){
+               request.setAttribute("type", user_type);
                RequestDispatcher rd = request.getRequestDispatcher("Home.jsp");
                rd.forward(request, response);
            }

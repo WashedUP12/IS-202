@@ -46,7 +46,7 @@ article {
 <header>
    <h1>SLIT</h1>
 </header>
-  
+
 <nav>
   <ul>
     <li><a href="studentlist">Students</a></li>
@@ -65,7 +65,7 @@ article {
             </pre>
         </form>
 
-<footer>Kanskje en copyright?</footer>
+<footer></footer>
 
 </div>
 

@@ -48,25 +48,22 @@ article {
 </header>
   
 <nav>
-  <ul>
-    <li><a href="studentlist">Students</a></li>
-    <li><a href="modulelist">Modules</a></li>
-    <li><a href="index.jsp">Log out</a></li>
-  </ul>
+  
 </nav>
+    <article>
+        <form action="Login" method="post">
+                    <pre>
+                    <input type="varchar" name="user" required="required" placeholder="user name">
 
-<form action="Login" method="post">
-            <pre>
-            <input type="varchar" name="user" required="required" placeholder="user name">
-                
-            <input type="varchar" name="password" required="required" placeholder="password">
-            
-            
-            <input type="submit" value="Login">
-            </pre>
+                    <input type="varchar" name="password" required="required" placeholder="password">
+
+
+                    <input type="submit" value="Login">
+                    </pre>
         </form>
+    </article>
 
-<footer>Kanskje en copyright?</footer>
+<footer></footer>
 
 </div>
 

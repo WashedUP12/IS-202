@@ -44,7 +44,7 @@ public class ModuleRegistration extends HttpServlet {
            String beskrivelse = request.getParameter("beskrivelse");
            String sql ="insert into modul (modulnavn, beskrivelse) values(?,?)";
            Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","ditt passord");
+           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","dittPassord");
            PreparedStatement ps = con.prepareStatement(sql);
            ps.setString(1, modulnavn);
            ps.setString(2, beskrivelse);

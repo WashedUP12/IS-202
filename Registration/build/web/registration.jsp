@@ -47,6 +47,7 @@ article {
    <h1>SLIT</h1>
 </header>
   
+
 <nav>
   <ul>
     <li><a href="studentlist">Students</a></li>
@@ -54,6 +55,7 @@ article {
     <li><a href="index.jsp">Log out</a></li>
   </ul>
 </nav>
+
 
 <form action="Registration" method="post">
             <pre>
@@ -67,7 +69,7 @@ article {
             </pre>
         </form>
 
-<footer>Kanskje en copyright?</footer>
+<footer></footer>
 
 </div>
 

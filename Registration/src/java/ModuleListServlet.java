@@ -42,12 +42,12 @@ public class ModuleListServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");       
         try (PrintWriter out = response.getWriter()) {
            Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","ditt passord");
+           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","dittPassord");
            Statement stmt = con.createStatement();
            ArrayList list = new ArrayList();
            ResultSet rs = stmt.executeQuery("SELECT * FROM modul");
 
-           
+            
             while (rs.next()) {
                 list.add(rs.getString("modul_ID"));
                 list.add(rs.getString("modulnavn"));
@@ -56,6 +56,7 @@ public class ModuleListServlet extends HttpServlet {
             }
             request.setAttribute("data", list);
             request.setAttribute("student", Login.user_name);
+            request.setAttribute("type", Login.user_type);
             RequestDispatcher rd = request.getRequestDispatcher("Modulgodkjenning.jsp");
             rd.forward(request, response);
             

@@ -46,145 +46,80 @@ nav ul a {
    <h1>SLIT</h1>
 </header>
   
-<nav>
-  <ul>
-   <li><a href="studentlist">Students</a></li>
-    <li><a href="modulelist">Modules</a></li>
-    <li><a href="index.jsp">Log out</a></li>
-  </ul>
-</nav>
-<div class="container">
-<% Iterator itr;%>
-<% List data=(List)request.getAttribute("data");
-String student = (String) request.getAttribute("student");
-for(itr=data.iterator(); itr.hasNext(); ){
+<%
+String type = (String) request.getAttribute("type");    
 %>
+
+<% if (type.equals("student")) { %>
+    <nav>
+      <ul>
+        <li><a href="">My blog</a></li>
+        <li><a href="modulelist">Modules</a></li>
+        <li><a href="index.jsp">Log out</a></li>
+      </ul>
+    </nav>
+<%} else {%>
+    <nav>
+      <ul>
+        <li><a href="studentlist">Students</a></li>
+        <li><a href="modulelist">Modules</a></li>
+        <li><a href="index.jsp">Log out</a></li>
+      </ul>
+    </nav>
+<%}%>
+    
+<div class="container">
+<% String student = (String) request.getAttribute("student"); %>
 <h2><%= student %></h2> 
-<h2><a href="moduleregistration.jsp"> Register new module</a></h2>
+<h2><a href="moduleregistration.jsp"> Register Module</a></h2>
   
   <div class="panel-group" id="accordion">
+
+<% ListIterator iter;%>      
+<% List data=(List)request.getAttribute("data");
+for(iter = data.listIterator(); iter.hasNext(); ){
+%>
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Modul <%=itr.next()%></a>
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=iter.nextIndex()%>">Modul <%=iter.next()%></a>
         </h4>
       </div>
-      <div id="collapse1" class="panel-collapse collapse in">
+      <div id="collapse"class="panel-collapse collapse in">
         <div class="panel-body">
   <article>
-  <h2><%=itr.next()%></h2>
-  <div> <%=itr.next()%>
-      <h4> <%=itr.next()%> </h4>
-<%}%>
+  <h2><%=iter.next()%></h2>
+  <div> <%=iter.next()%> 
+      <h4> Date created: <%=iter.next()%> </h4>
 
-<input type="file" id="myFile">
-
-
-
-<button onclick="myFunction()">Lever Modul</button>
-<script>
-function Lever Modul() {
-    var x = document.getElementById("myFile");
-    x.disabled = true;
-}
-</script>
-
-<form action="/action_page.php">
-  <textarea name="message" rows="10" cols="50">Skriv et blogg innlegg</textarea>
-  <br>
-  <input type="submit">
-</form>
-  
-      </div>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Modul 2</a>
-        </h4>
-      </div>
-      <div id="collapse2" class="panel-collapse collapse">
-        <div class="panel-body">
-           <article>
-  <h2>Modul 2: Klassedefinisjoner</h2>
-  <div>
-I denne modulen skal du lære å lese java klassedefinisjoner. Java programmer består av klasser, så du skal egentlig lære å lese javaprogrammer. Du skal også få prøve å skrive enkle programmer, men akkurat som når du skal lære andre språk, må du lære å lese før du kan begynne å skrive.</div><br>
-
-
-
-<strong>Læringsmål:</strong>
-Du har fullført modulen når du kan:
-
-<br>Lese en klassedefinisjon, og kunne fortelle:</br>
-<ul>
-<li>hva klassen heter.</li>
-<li>hvilke felt den har, hva de heter og hvilken type de har</li>
-<li>hvilke metoder den har, og hva metodene heter</li>
-<li>beskrive parametere (med navn og type) og returverdi for alle metodene</li>
-<br>
-<li>Kjenner forskjellen på forskjellige slags metoder (constructors, getters, setters) og vet hva de brukes til</li>
-<li>Kan skrive en klassedefinisjon</li>
-<li>med felt og metoder i riktig rekkefølge</li>
-<li>med metoder som bruker tilordning, if-setninger og utskrifter</li>
-</ul>
-</article>
-</br>
-
-<input type="file" id="myFile">
-
-
-
-<button onclick="myFunction()">Lever Modul</button>
-<script>
-function Lever Modul() {
-    var x = document.getElementById("myFile");
-    x.disabled = true;
-}
-</script>
-
-<form action="/action_page.php">
-  <textarea name="message" rows="10" cols="50">Skriv et blogg innlegg</textarea>
-  <br>
-  <input type="submit">
-</form>
-
-      </div>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Modul 3</a>
-        </h4>
-      </div>
-      <div id="collapse3" class="panel-collapse collapse">
-        <div class="panel-body">
-        </div>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">Modul 4</a>
-        </h4>
-      </div>
-      <div id="collapse4" class="panel-collapse collapse">
-        <div class="panel-body">
-        </div>
-    </div>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">Modul 5</a
-        </h4>
-      </div>
-      <div id="collapse5" class="panel-collapse collapse">
-        <div class="panel-body">
-      </div>
-    </div>
-  </div> 
+<form method="post" action="UploadFileController" enctype="multipart/form-data">
+                <table border="1" width="25%" cellpadding="5">
+                    <thead> 
+                            <th colspan="3">Deliver Module</th>        
+                    </thead>
+                    <tbody>
+                        <tr>    
+                            <td>Title : </td>
+                            <td><input type="text" name="title" size="30"></td>
+                        </tr>
+                        <tr>
+                            <td>Choose File : </td>
+                            <td><input type="file" name="file_uploaded" /></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3"><center><input type="submit" value="Upload"></center></td>
+                        </tr>
+                    </tbody>             
+                </table>
+        </form>
 </div>
-    
+      </div>
+</div>
+<%}%>
+    </div>
+</div>
 
-<footer>Kanskje en copyright?</footer>
+<footer></footer>
 
 </div>
 

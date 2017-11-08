@@ -37,6 +37,12 @@ table {
     padding: 1em;
     overflow: hidden;
 }
+article {
+    margin-left: 170px;
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}
 </style>
 </head>
 <body>
@@ -48,14 +54,28 @@ table {
    <p1>Studenter</p1>
 </header>
   
-<nav>
-  <ul>
-     <li><a href="studentlist">Students</a></li>
-    <li><a href="modulelist">Modules</a></li>
-    <li><a href="index.jsp">Log out</a></li>
-  </ul>
-</nav>
-<h2><a href="registration.jsp"> Register new student</a></h2>
+<%
+String type = (String) request.getAttribute("type");    
+%>
+
+<% if (type.equals("student")) { %>
+    <nav>
+      <ul>
+        <li><a href="">My blog</a></li>
+        <li><a href="modulelist">Modules</a></li>
+        <li><a href="index.jsp">Log out</a></li>
+      </ul>
+    </nav>
+<%} else {%>
+    <nav>
+      <ul>
+        <li><a href="studentlist">Students</a></li>
+        <li><a href="modulelist">Modules</a></li>
+        <li><a href="index.jsp">Log out</a></li>
+      </ul>
+    </nav>
+<%}%> 
+
 <table>
   <tr>
     <th>Bruker ID</th>
@@ -66,15 +86,17 @@ table {
   </tr>
 <% Iterator itr;%>
 <% List data=(List)request.getAttribute("data");
+String studentNumber;
 for(itr=data.iterator(); itr.hasNext(); ){
 %>
+<% studentNumber = "" + itr.next();%>    
   <tr>
-    <td><%=itr.next()%></td>
+    <td><%= studentNumber %></td>
     <td><%=itr.next()%> &ensp;</td>
     <td>Student &ensp;</td>
     <td><%=itr.next()%></td>
     <td>
-		<a href="StudentSelection.html">
+		<a href="studentstatus?studentID=<%= studentNumber %>">
 			<div style="height:100%;width:100%">
 				&#8680;
 			</div>
@@ -84,7 +106,12 @@ for(itr=data.iterator(); itr.hasNext(); ){
 <%}%>
 </table>
 
-<footer>Kanskje en copyright?</footer>
+<article>
+    <h2><a href="registration.jsp"> Register new student</a></h2>
+</article>
+
+
+<footer></footer>
 
 </div>
 

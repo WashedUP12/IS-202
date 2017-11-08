@@ -46,22 +46,37 @@ article {
 <header>
    <h1>SLIT</h1>
 </header>
-  
-<nav>
-  <ul>
-    <li><a href="studentlist">Students</a></li>
-    <li><a href="modulelist">Modules</a></li>
-    <li><a href="index.jsp">Log out</a></li>
-  </ul>
-</nav>
+<%
+String type = (String) request.getAttribute("type");    
+%>
+
+<% if (type.equals("student")) { %>
+    <nav>
+      <ul>
+        <li><a href="">My blog</a></li>
+        <li><a href="modulelist">Modules</a></li>
+        <li><a href="index.jsp">Log out</a></li>
+      </ul>
+    </nav>
+<%} else {%>
+    <nav>
+      <ul>
+        <li><a href="studentlist">Students</a></li>
+        <li><a href="modulelist">Modules</a></li>
+        <li><a href="index.jsp">Log out</a></li>
+      </ul>
+    </nav>
+<%}%>
 
 <article>
-  <h1>Framsiden</h1>
-  <p>Programmering</p>
-  <p>Lærere:</p>
+  <h1> Velkommen </h1>
+  <h2> Du er innlogget som <%= type %> </h2>
 </article>
 
-<footer>Kanskje en copyright?</footer>
+        
+    
+    
+<footer></footer>
 
 </div>
 
