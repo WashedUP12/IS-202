@@ -1,4 +1,15 @@
+<%@page import="java.util.logging.*"%>
+<%@page import="java.sql.SQLException"%>
+<%@page import="java.sql.PreparedStatement"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.Connection"%>
 <%@page language="java" import="java.util.*" %>
+<%@ page import = "java.io.*,java.util.*,java.sql.*"%>
+<%@ page import = "javax.servlet.http.*,javax.servlet.*" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c"%>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/sql" prefix = "sql"%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -6,10 +17,11 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
+
 <style>
 div.container {
     width: 80%;
+    margin: auto;
     
 }
 
@@ -44,6 +56,7 @@ nav ul a {
 
 <header>
    <h1>SLIT</h1>
+   <p1>Modules</p1>
 </header>
   
 <%
@@ -53,7 +66,8 @@ String type = (String) request.getAttribute("type");
 <% if (type.equals("student")) { %>
     <nav>
       <ul>
-        <li><a href="">My blog</a></li>
+        <li><a href="home">Home</a></li>
+        <li><a href="BlogListServlet">My blog</a></li>
         <li><a href="modulelist">Modules</a></li>
         <li><a href="index.jsp">Log out</a></li>
       </ul>
@@ -61,6 +75,7 @@ String type = (String) request.getAttribute("type");
 <%} else {%>
     <nav>
       <ul>
+        <li><a href="home">Home</a></li>
         <li><a href="studentlist">Students</a></li>
         <li><a href="modulelist">Modules</a></li>
         <li><a href="index.jsp">Log out</a></li>
@@ -71,8 +86,9 @@ String type = (String) request.getAttribute("type");
 <div class="container">
 <% String student = (String) request.getAttribute("student"); %>
 <h2><%= student %></h2> 
-<h2><a href="moduleregistration.jsp"> Register Module</a></h2>
-  
+<% if (type.equals("lærer")) { %>
+<h2><u><a href="moduleregistration.jsp"> Add New Module</a></u></h2>
+<%}%>
   <div class="panel-group" id="accordion">
 
 <% ListIterator iter;%>      
@@ -82,46 +98,100 @@ for(iter = data.listIterator(); iter.hasNext(); ){
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%=iter.nextIndex()%>">Modul <%=iter.next()%></a>
+          <a data-toggle="collapse" data-parent="#accordion" href="#<%=iter.nextIndex()%>">Modul <%=iter.next()%></a>
         </h4>
       </div>
-      <div id="collapse"class="panel-collapse collapse in">
+      <div id="<%=iter.previousIndex()%>"class="collapse">
         <div class="panel-body">
   <article>
-  <h2><%=iter.next()%></h2>
   <div> <%=iter.next()%> 
       <h4> Date created: <%=iter.next()%> </h4>
 
-<form method="post" action="UploadFileController" enctype="multipart/form-data">
-                <table border="1" width="25%" cellpadding="5">
-                    <thead> 
-                            <th colspan="3">Deliver Module</th>        
-                    </thead>
-                    <tbody>
-                        <tr>    
-                            <td>Title : </td>
-                            <td><input type="text" name="title" size="30"></td>
-                        </tr>
-                        <tr>
-                            <td>Choose File : </td>
-                            <td><input type="file" name="file_uploaded" /></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3"><center><input type="submit" value="Upload"></center></td>
-                        </tr>
-                    </tbody>             
-                </table>
-        </form>
 </div>
+    <div class="panel-heading">
+        <h4 class="panel-title">
+            <a data-toggle="collapse" href="#<%=iter.previousIndex()%>"><u><span style="color:#4286f4">Student Delivery Status</span></u></a>
+        </h4>
       </div>
+      <div id="<%=iter.previousIndex()%>"class="collapse">
+        <div class="panel-body"> 
+            
+            <sql:setDataSource var = "snapshot" driver = "${requestScope.driver}"
+            url = "${requestScope.con}"
+            user = "${requestScope.username}"  password = "${requestScope.password}"/>
+
+            <sql:query dataSource = "${snapshot}" var = "result">
+               select modulstatus.userID, modPoeng, modEval, name, modStatus from modulstatus left join register using (userID)where modul_ID=1
+
+            </sql:query>
+
+         <table border = "1" width = "100%">
+            <tr>
+                <th><center>Name</center></th>
+                <th><center>Delivery Status</center></th>
+                <th><center>Evaluation</center></th>
+                <th><center>Points</center></th>
+                <th><center>Review</center></th>
+            </tr>
+
+            <c:forEach var = "row" items = "${result.rows}">
+                <tr>
+                  <td> <c:out value = "${row.name}"/></td>
+                  <td> <c:out value = "${row.modStatus}"/></td>
+                  <td> <c:out value = "${row.modEval}"/></td>
+                  <td> <c:out value = "${row.modPoeng}"/></td>
+                  <td><center><a onclick="myFunction('${row.userID}');return false;">Review Assignment</a></center></td>
+                </tr>   
+            </c:forEach>
+         </table>
+
+        </div>
+      </div>
+    </div>
 </div>
 <%}%>
     </div>
 </div>
-
+    
 <footer></footer>
 
 </div>
+<script>
+    function myFunction(myString){
+    var x;
+    var eval=prompt("Enter your evaluation");
+    var status=prompt("godkjent/ikke Godkjent");
+    var poeng=prompt("Poengsum 1-100");
+    if (eval!=null && status!=null && poeng!=null){
+        x="Evaluation is now set to: " + eval + ". Status: " + status + ". Score: "
+        + poeng;
+        alert(x);
+        post('evaluationHandler', {evaluation: eval, stat: status, points: poeng, userID: myString});
+   }
+}
+    function post(path, params, method) {
+    method = method || "post"; // Set method to post by default if not specified.
 
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
 </body>
 </html>

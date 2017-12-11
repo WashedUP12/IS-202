@@ -41,9 +41,12 @@ public class StudentStatusServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");       
         try (PrintWriter out = response.getWriter()) {
+            
+           /* Setter opp databasetilkobling og sql-spørring */
            String studentID = request.getParameter("studentID");
-           Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","dittPassord");
+           Class.forName(DBConnection.driver);
+           Connection con = DriverManager.getConnection(DBConnection.con, 
+                   DBConnection.username, DBConnection.password);
            String sql = "SELECT name, modul_ID, modStatus "
                    + "FROM modulstatus "
                    + "right join register on modulstatus.userID = register.userID "
@@ -52,17 +55,20 @@ public class StudentStatusServlet extends HttpServlet {
            sqlstmt.setString(1, studentID);
            ArrayList list = new ArrayList();
            ResultSet rs = sqlstmt.executeQuery();
-
+            
+           /* Henter resultatene fra spørring og behandler de */  
             while (rs.next()) {
-                list.add(rs.getString("name"));
                 list.add(rs.getString("modul_ID"));
                 list.add(rs.getString("modStatus"));
             }
+            /* sender data som attributter gjennom request-objekt,
+            *  og dirigerer videre til jsp.
+            */
             request.setAttribute("data", list);
             request.setAttribute("student", Login.user_name);
             request.setAttribute("type", Login.user_type);
             RequestDispatcher rd = request.getRequestDispatcher("StudentStatus.jsp");
-            rd.forward(request, response);
+            rd.forward(request, response);  
             
         } catch (ClassNotFoundException ex) {
         Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);

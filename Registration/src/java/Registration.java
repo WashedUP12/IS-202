@@ -37,13 +37,15 @@ public class Registration extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+           
+           /* Setter opp databasetilkobling og sql-spørring */
            String name = request.getParameter("user");
            String password = request.getParameter("password");
            String email = request.getParameter("email");
            String sql ="insert into register (name,password,email) values(?,?,?)";
-           Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","dittPassord");
+           Class.forName(DBConnection.driver);
+           Connection con = DriverManager.getConnection(DBConnection.con, 
+                   DBConnection.username, DBConnection.password);
            PreparedStatement ps = con.prepareStatement(sql);
            ps.setString(1, name);
            ps.setString(2, password);

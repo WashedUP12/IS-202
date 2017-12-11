@@ -4,6 +4,7 @@
 <style>
 div.container {
     width: 80%;
+    margin: auto;
     
 }
 
@@ -32,16 +33,19 @@ nav ul a {
 }
 
 table {
-    margin-left: 170px;
-    border-left: 1px solid gray;
-    padding: 1em;
-    overflow: hidden;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
 }
-article {
-    margin-left: 170px;
-    border-left: 1px solid gray;
-    padding: 1em;
-    overflow: hidden;
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
 }
 </style>
 </head>
@@ -51,7 +55,7 @@ article {
 
 <header>
    <h1>SLIT</h1>
-   <p1>Studenter</p1>
+   <p1>Students</p1>
 </header>
   
 <%
@@ -61,7 +65,8 @@ String type = (String) request.getAttribute("type");
 <% if (type.equals("student")) { %>
     <nav>
       <ul>
-        <li><a href="">My blog</a></li>
+        <li><a href="home">Home</a></li>
+        <li><a href="BlogListServlet">My blog</a></li>
         <li><a href="modulelist">Modules</a></li>
         <li><a href="index.jsp">Log out</a></li>
       </ul>
@@ -69,20 +74,21 @@ String type = (String) request.getAttribute("type");
 <%} else {%>
     <nav>
       <ul>
+        <li><a href="home">Home</a></li>
         <li><a href="studentlist">Students</a></li>
         <li><a href="modulelist">Modules</a></li>
         <li><a href="index.jsp">Log out</a></li>
       </ul>
     </nav>
-<%}%> 
+<%}%>
 
 <table>
   <tr>
-    <th>Bruker ID</th>
-    <th>Elev</th>
-    <th>Rolle</th>
-    <th>E-post</th>
-    <th>Modul</th>
+    <th>User ID</th>
+    <th>Student</th>
+    <th>Email</th>
+    <th>Blog</th>
+    <th>Module Status</th>
   </tr>
 <% Iterator itr;%>
 <% List data=(List)request.getAttribute("data");
@@ -93,23 +99,32 @@ for(itr=data.iterator(); itr.hasNext(); ){
   <tr>
     <td><%= studentNumber %></td>
     <td><%=itr.next()%> &ensp;</td>
-    <td>Student &ensp;</td>
     <td><%=itr.next()%></td>
+    <td>
+		<a href="BlogListServlet?studentID=<%= studentNumber %>">
+			<div style="height:100%;width:100%">
+				&#2039;
+			</div>
+		</a>
+    </td>
+    
     <td>
 		<a href="studentstatus?studentID=<%= studentNumber %>">
 			<div style="height:100%;width:100%">
 				&#8680;
 			</div>
 		</a>
-	</td>
+    </td>
   </tr>
 <%}%>
 </table>
 
+<% if (type.equals("lærer")) { %>
 <article>
     <h2><a href="registration.jsp"> Register new student</a></h2>
 </article>
 
+<%}%>
 
 <footer></footer>
 

@@ -25,7 +25,13 @@ import javax.servlet.http.HttpServletResponse;
  * @author eriky
  */
 public class Login extends HttpServlet {
-
+    
+    public static int user_ID;
+    public static String user_name;
+    public static String user_type;
+    public static boolean isAdmin;
+    public static String jspTest = "test";
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,27 +41,26 @@ public class Login extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    public static int user_ID;
-    public static String user_name;
-    public static String user_type;
-    public static boolean isAdmin;
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            /* Setter opp databasetilkobling og sql-spørring */
            String name = request.getParameter("user");
            String password = request.getParameter("password");
            String dbName = null;
            String dbPassword = null;
            String sql ="select * from register where name=? and password=?";
-           Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","dittPassord");
+           Class.forName(DBConnection.driver);
+           Connection con = DriverManager.getConnection(DBConnection.con, 
+                   DBConnection.username, DBConnection.password);
            PreparedStatement ps = con.prepareStatement(sql);
            ps.setString(1, name);
            ps.setString(2, password);
            ResultSet rs = ps.executeQuery();
+           
+           /* Henter resultatene fra spørring og behandler de */ 
            while(rs.next()){
                dbName = rs.getString("name");
                dbPassword = rs.getString("password");
@@ -70,14 +75,24 @@ public class Login extends HttpServlet {
                    isAdmin = false;
                }
            }
+           
+           /* Sjekker om login stemmer med databasen, og
+            * sender data som attributter gjennom request-objekt,
+            *  og dirigerer videre til jsp.
+            */
            if (name.equals (dbName)&&password.equals(dbPassword)){
                request.setAttribute("type", user_type);
+               request.setAttribute("student", Login.user_name);
+               request.setAttribute("driver", DBConnection.driver);
+               request.setAttribute("con", DBConnection.con);
+               request.setAttribute("username", DBConnection.username);
+               request.setAttribute("password", DBConnection.password);
                RequestDispatcher rd = request.getRequestDispatcher("Home.jsp");
                rd.forward(request, response);
            }
            else{
-               response.sendRedirect("Login.jsp");
-               RequestDispatcher rd = request.getRequestDispatcher("Login.jsp");
+               response.sendRedirect("index.jsp");
+               RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
                rd.include (request, response);
            }
            

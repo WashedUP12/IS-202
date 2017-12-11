@@ -6,8 +6,10 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -41,24 +43,44 @@ public class ModuleListServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");       
         try (PrintWriter out = response.getWriter()) {
-           Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","dittPassord");
-           Statement stmt = con.createStatement();
-           ArrayList list = new ArrayList();
-           ResultSet rs = stmt.executeQuery("SELECT * FROM modul");
-
+            /* Setter opp databasetilkobling og sql-spørring */
+            Class.forName(DBConnection.driver);
+            Connection con = DriverManager.getConnection(DBConnection.con, 
+                   DBConnection.username, DBConnection.password);
+            Statement stmt = con.createStatement();
+            ArrayList list = new ArrayList();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM modul");
             
+            /* Henter resultatene fra spørring og behandler de */  
             while (rs.next()) {
                 list.add(rs.getString("modul_ID"));
-                list.add(rs.getString("modulnavn"));
-                list.add(rs.getString("beskrivelse"));
+                
+                Blob blob = rs.getBlob("beskrivelse");
+                byte[] bdata = blob.getBytes(1, (int) blob.length());
+                String beskrivelse = new String(bdata);
+                list.add(beskrivelse);
+                
                 list.add(rs.getString("dato"));
             }
+            
+            /* sender data som attributter gjennom request-objekt,
+            *  og dirigerer videre til jsp.
+            */
             request.setAttribute("data", list);
             request.setAttribute("student", Login.user_name);
             request.setAttribute("type", Login.user_type);
-            RequestDispatcher rd = request.getRequestDispatcher("Modulgodkjenning.jsp");
-            rd.forward(request, response);
+            request.setAttribute("driver", DBConnection.driver);
+            request.setAttribute("con", DBConnection.con);
+            request.setAttribute("username", DBConnection.username);
+            request.setAttribute("password", DBConnection.password);
+            
+            if (Login.user_type.equals("lærer")) {
+                RequestDispatcher rd = request.getRequestDispatcher("Modulgodkjenning.jsp");
+                rd.forward(request, response); 
+            } else {
+                RequestDispatcher rd = request.getRequestDispatcher("Moduloversikt-student.jsp");
+                rd.forward(request, response); 
+            }
             
         } catch (ClassNotFoundException ex) {
         Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);

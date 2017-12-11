@@ -38,7 +38,8 @@ public class UploadFileController extends HttpServlet {
                 PrintWriter out = response.getWriter();
         
                 InputStream inputStream = null;
-
+                
+                /* Genererer tilfeldig ID*/
                 Random rand = new Random();
                 int  n = rand.nextInt(9999) + 1;
                 String idTemp=(String.valueOf(n));
@@ -47,6 +48,7 @@ public class UploadFileController extends HttpServlet {
                 String title=(request.getParameter("title"));
                 Part filePart = request.getPart("file_uploaded");
                 
+                /* Skriver om filen til inputstream*/
                 if (filePart != null) 
                 {
                     System.out.println(filePart.getName());
@@ -55,14 +57,16 @@ public class UploadFileController extends HttpServlet {
 
                     inputStream = filePart.getInputStream();
                 }
-        
+                
                 try 
                 {
-                    Class.forName("com.mysql.jdbc.Driver");
-                    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","dittPassord");
+                    Class.forName(DBConnection.driver);
+                    Connection con = DriverManager.getConnection(DBConnection.con, 
+                                    DBConnection.username, DBConnection.password);
                 
                     
                     String sql = "INSERT INTO files (id, title, file) values (?, ?, ?)";
+
                     PreparedStatement statement = con.prepareStatement(sql);
                     statement.setString(1, idTemp);
                     statement.setString(2, title);
@@ -76,14 +80,11 @@ public class UploadFileController extends HttpServlet {
                     if (row > 0) 
                     {
                         
-                        out.println("<script type=\"text/javascript\">");  
-                        out.println("alert('User Account already Exist !!');");  
-                        out.println("</script>");
-                        
                         con.close();
-                        
-                        RequestDispatcher rs = request.getRequestDispatcher("modulelist");
-                        rs.include(request, response);
+                        String modul = "module";
+                        request.setAttribute("varselType", modul);
+                        RequestDispatcher rd = request.getRequestDispatcher("notificationRegister");
+                        rd.forward(request, response);
                     }
                     else
                     {

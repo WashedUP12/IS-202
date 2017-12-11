@@ -41,17 +41,24 @@ public class StudentListServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");       
         try (PrintWriter out = response.getWriter()) {
-           Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","dittPassord");
+            
+           /* Setter opp databasetilkobling og sql-spørring */
+           Class.forName(DBConnection.driver);
+           Connection con = DriverManager.getConnection(DBConnection.con, 
+                   DBConnection.username, DBConnection.password);
            Statement stmt = con.createStatement();
            ArrayList<String> list = new ArrayList<String>();
            ResultSet rs = stmt.executeQuery("SELECT userID, name, email FROM register");
 
+           /* Henter resultatene fra spørring og behandler de */  
             while (rs.next()) {
                 list.add(rs.getString("userID"));
                 list.add(rs.getString("name"));
                 list.add(rs.getString("email"));
             }
+            /* sender data som attributter gjennom request-objekt,
+            *  og dirigerer videre til jsp.
+            */
             request.setAttribute("data", list);
             request.setAttribute("type", Login.user_type);
             RequestDispatcher rd = request.getRequestDispatcher("Studentoversikt.jsp");

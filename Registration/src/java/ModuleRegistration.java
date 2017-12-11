@@ -5,19 +5,26 @@
  */
 
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.sql.rowset.serial.SerialBlob;
 
 /**
  *
@@ -38,29 +45,69 @@ public class ModuleRegistration extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-           String modulnavn = request.getParameter("modulnavn");
-           String beskrivelse = request.getParameter("beskrivelse");
-           String sql ="insert into modul (modulnavn, beskrivelse) values(?,?)";
-           Class.forName("com.mysql.jdbc.Driver");
-           Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/webshop","root","dittPassord");
-           PreparedStatement ps = con.prepareStatement(sql);
-           ps.setString(1, modulnavn);
-           ps.setString(2, beskrivelse);
-           ps.executeUpdate();
-           response.getWriter();
-           out.println("Successfull Registration");
-           
-           
-           
-           
+        File file = new File("textfile.txt");
+        PrintWriter out = response.getWriter();
+
+        /* Henter string fra request parameter, og skriver 
+         * den til en ny fil.
+         */
+        String text = request.getParameter("beskrivelse");
+        try (PrintWriter writer = new PrintWriter(file)) {
+            writer.println(text);
+            writer.close();
+
+
+
+            BufferedReader in = new BufferedReader(new FileReader(file));
+            String line;
+            while((line = in.readLine()) != null)
+            {
+                out.println(line);
+            }
+            in.close();
+        }
+
+
+        // oppretter en byte array med størrelsen til filen
+        byte[] fileContent = new byte[(int) file.length()];
+        FileInputStream inputStream = null;
+        try {
+                // Lager en inputstream som henviser til filen
+                inputStream = new FileInputStream(file);
+                // Skriver over innholdet i filen til byte arrayen
+                inputStream.read(fileContent);
+        } catch (IOException e) {
+                throw new IOException("Unable to convert file to byte array. " + e.getMessage());
+        } finally {
+                // lukker input stream
+                if (inputStream != null) {
+                        inputStream.close();
+                }
+        }
+        
+        /* Sql spørring som legger til en blob i databasen*/
+        try {
+            String sql ="insert into modul (beskrivelse) values (?)";
+            Class.forName(DBConnection.driver);
+            Connection con = DriverManager.getConnection(DBConnection.con, 
+                   DBConnection.username, DBConnection.password);
+            PreparedStatement ps = con.prepareStatement(sql);
+            Blob blob = new SerialBlob(fileContent);
+            ps.setBlob(1, blob);
+            ps.execute();
+            ps.close();
+            request.setAttribute("student", Login.user_name);
+            request.setAttribute("type", Login.user_type);
+            RequestDispatcher rd = request.getRequestDispatcher("modulelist");
+            rd.forward(request, response);
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(Registration.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+}
+
+}
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

@@ -4,6 +4,7 @@
 <style>
 div.container {
     width: 80%;
+    margin: auto;
     
 }
 

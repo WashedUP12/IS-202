@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="http://js.nicedit.com/nicEdit-latest.js" type="text/javascript"></script>
+<script type="text/javascript">bkLib.onDomLoaded(nicEditors.allTextAreas);</script>
 <style>
 div.container {
     width: 80%;
+    margin: auto;
     
 }
 
@@ -49,25 +52,21 @@ article {
 
 <nav>
   <ul>
+    <li><a href="home">Home</a></li>
     <li><a href="studentlist">Students</a></li>
     <li><a href="modulelist">Modules</a></li>
     <li><a href="index.jsp">Log out</a></li>
   </ul>
 </nav>
 
+
 <form action="moduleregistration" method="post">
             <pre>
-            <input type="varchar" name="modulnavn" required="required" placeholder="Modulnavn">
-                
-            <input type="varchar" name="beskrivelse" required="required" placeholder="Beskrivelse">
+            <textarea id="area2" type="varchar" name="beskrivelse" required="required" rows="8" cols="80"></textarea>
             
-            <input type="submit" value="Register">
+            <input type=submit name="submit" value="Send" onclick="nicEditors.findEditor('area2').saveContent();">
             </pre>
-        </form>
-
-<footer></footer>
-
+</form>
 </div>
-
 </body>
 </html>

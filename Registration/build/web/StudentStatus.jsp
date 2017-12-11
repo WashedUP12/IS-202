@@ -4,6 +4,7 @@
 <style>
 div.container {
     width: 80%;
+    margin: auto;
     
 }
 
@@ -54,7 +55,7 @@ tr:nth-child(even) {
 
 <header>
    <h1>SLIT</h1>
-   <p1>Studenter</p1>
+   <p1>Student</p1>
 </header>
   
 <%
@@ -64,7 +65,8 @@ String type = (String) request.getAttribute("type");
 <% if (type.equals("student")) { %>
     <nav>
       <ul>
-        <li><a href="">My blog</a></li>
+        <li><a href="home">Home</a></li>
+        <li><a href="BlogListServlet">My blog</a></li>
         <li><a href="modulelist">Modules</a></li>
         <li><a href="index.jsp">Log out</a></li>
       </ul>
@@ -72,29 +74,29 @@ String type = (String) request.getAttribute("type");
 <%} else {%>
     <nav>
       <ul>
+        <li><a href="home">Home</a></li>
         <li><a href="studentlist">Students</a></li>
         <li><a href="modulelist">Modules</a></li>
         <li><a href="index.jsp">Log out</a></li>
       </ul>
     </nav>
 <%}%>
-
+<% String student = (String) request.getAttribute("student"); %>
+<center><h2><%= student %></h2></center> 
 <table>
+    <tr>
+      <th>Module Number</th>
+      <th>Module Status</th>
+    </tr>
 <% Iterator itr;%>
 <% List data=(List)request.getAttribute("data");
-String student = (String) request.getAttribute("student");
 for(itr=data.iterator(); itr.hasNext(); ){
 %>
-  <tr>
-    <th>Student Name</th>
-    <th>Module Number</th>
-    <th>Module Status</th>
-  </tr>
-  <tr>
-    <td><%=itr.next()%></td>
-    <td><%=itr.next()%></td>
-    <td><%=itr.next()%></td>
-  </tr>
+  
+    <tr>
+      <td><%=itr.next()%></td>
+      <td><%=itr.next()%></td>
+    </tr>
 <%}%>  
 </table>
 

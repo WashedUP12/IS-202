@@ -4,6 +4,7 @@
 <style>
 div.container {
     width: 80%;
+    margin: auto;
     
 }
 
@@ -50,6 +51,7 @@ article {
 
 <nav>
   <ul>
+    <li><a href="home">Home</a></li>
     <li><a href="studentlist">Students</a></li>
     <li><a href="modulelist">Modules</a></li>
     <li><a href="index.jsp">Log out</a></li>
