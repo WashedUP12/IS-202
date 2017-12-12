@@ -1,108 +1,115 @@
 <%@page language="java" import="java.util.*" %>
 <html>
-<head>
-<style>
-div.container {
-    width: 80%;
-    margin: auto;
-    
-}
+    <head>
+        <style>
+            div.container {
+                width: 80%;
+                margin: auto;
 
-header, footer {
-    padding: 1em;
-    color: white;
-    background-color: brown;
-    clear: left;
-    text-align: center;
-}
+            }
 
-nav {
-    float: left;
-    max-width: 160px;
-    margin: 0;
-    padding: 1em;
-}
+            header, footer {
+                padding: 1em;
+                color: white;
+                background-color: brown;
+                clear: left;
+                text-align: center;
+            }
 
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-   
-nav ul a {
-    text-decoration: none;
-}
+            nav {
+                float: left;
+                max-width: 160px;
+                margin: 0;
+                padding: 1em;
+            }
 
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
+            nav ul {
+                list-style-type: none;
+                padding: 0;
+            }
 
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
+            nav ul a {
+                text-decoration: none;
+            }
 
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-</style>
-</head>
-<body>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
 
-<div class="container">
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
 
-<header>
-   <h1>SLIT</h1>
-   <p1>Student</p1>
-</header>
-  
-<%
-String type = (String) request.getAttribute("type");    
-%>
+            tr:nth-child(even) {
+                background-color: #dddddd;
+            }
+        </style>
+    </head>
+    <body>
 
-<% if (type.equals("student")) { %>
-    <nav>
-      <ul>
-        <li><a href="home">Home</a></li>
-        <li><a href="BlogListServlet">My blog</a></li>
-        <li><a href="modulelist">Modules</a></li>
-        <li><a href="index.jsp">Log out</a></li>
-      </ul>
-    </nav>
-<%} else {%>
-    <nav>
-      <ul>
-        <li><a href="home">Home</a></li>
-        <li><a href="studentlist">Students</a></li>
-        <li><a href="modulelist">Modules</a></li>
-        <li><a href="index.jsp">Log out</a></li>
-      </ul>
-    </nav>
-<%}%>
-<% String student = (String) request.getAttribute("student"); %>
-<center><h2><%= student %></h2></center> 
-<table>
-    <tr>
-      <th>Module Number</th>
-      <th>Module Status</th>
-    </tr>
-<% Iterator itr;%>
-<% List data=(List)request.getAttribute("data");
-for(itr=data.iterator(); itr.hasNext(); ){
-%>
-  
-    <tr>
-      <td><%=itr.next()%></td>
-      <td><%=itr.next()%></td>
-    </tr>
-<%}%>  
-</table>
+        <div class="container">
 
-<footer></footer>
+            <header>
+                <h1>SLIT</h1>
+                <p1>Student</p1>
+            </header>
 
-</div>
+            <%
+            String type = (String) request.getAttribute("type");    
+            %>
 
-</body>
+            <%-- Endrer menyen basert på brukertype --%>
+
+            <% if (type.equals("student")) { %>
+            <nav>
+                <ul>
+                    <li><a href="home">Home</a></li>
+                    <li><a href="BlogListServlet">My blog</a></li>
+                    <li><a href="modulelist">Modules</a></li>
+                    <li><a href="index.jsp">Log out</a></li>
+                </ul>
+            </nav>
+            <%} else {%>
+            <nav>
+                <ul>
+                    <li><a href="home">Home</a></li>
+                    <li><a href="studentlist">Students</a></li>
+                    <li><a href="modulelist">Modules</a></li>
+                    <li><a href="index.jsp">Log out</a></li>
+                </ul>
+            </nav>
+            <%}%>
+            <% String student = (String) request.getAttribute("student"); %>
+            <center><h2><%= student %></h2></center> 
+            
+            <%-- Oppretter tabell --%> 
+            <table>
+                <tr>
+                    <th>Module Number</th>
+                    <th>Module Status</th>
+                </tr>
+                
+                <%-- Iterer gjennom, og legger til informasjon fra listen til tabellen --%> 
+                
+                <% Iterator itr;%>
+                <% List data=(List)request.getAttribute("data");
+                for(itr=data.iterator(); itr.hasNext(); ){
+                %>
+
+                <tr>
+                    <td><%=itr.next()%></td>
+                    <td><%=itr.next()%></td>
+                </tr>
+                <%}%>  
+            </table>
+
+            <footer></footer>
+
+        </div>
+
+    </body>
 </html>
